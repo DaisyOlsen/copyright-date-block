@@ -12,7 +12,13 @@
 
 // Get the current year.
 $current_year = date( "Y" );
+if ( ! empty( $attributes['beforeText'] ) ) {
+	$display_before_text = $attributes['beforeText'] . ' ';
+}
 
+if ( ! empty( $attributes['afterText'] ) ) {
+	$display_before_text = ' ' . $attributes['afterText'];
+}
 // Determine which content to display.
 if ( isset( $attributes['fallbackCurrentYear'] ) && $attributes['fallbackCurrentYear'] === $current_year ) {
 
@@ -27,7 +33,7 @@ if ( isset( $attributes['fallbackCurrentYear'] ) && $attributes['fallbackCurrent
 		$display_date = $current_year;
 	}
 
-	$block_content = '<p ' . get_block_wrapper_attributes() . '>© ' . esc_html( $display_date ) . '</p>';
+	$block_content = '<p ' . get_block_wrapper_attributes() . '>' . esc_html($display_before_text) . '© ' . esc_html( $display_date ) . esc_html($display_after_text) . '</p>';
 }
 
 echo wp_kses_post( $block_content );

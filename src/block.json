@@ -1,13 +1,19 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
-	"name": "outermost/copyright-date-block",
+	"name": "ftm/copyright-date-block",
 	"version": "0.1.0",
 	"title": "Copyright Date",
 	"category": "widgets",
 	"description": "Display your site's copyright date.",
 	"example": {},
 	"attributes": {
+		"beforeText": {
+			"type": "string"
+		},
+		"afterText": {
+			"type": "string"
+		},
 		"fallbackCurrentYear": {
 			"type": "string"
 		},

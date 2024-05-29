@@ -42,31 +42,42 @@ import { useEffect } from 'react';
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-edit-save/#edit
  *
- * @param {Object}   props               Properties passed to the function.
- * @param {Object}   props.attributes    Available block attributes.
+ * @param {object}   props               Properties passed to the function.
+ * @param {object}   props.attributes    Available block attributes.
  * @param {Function} props.setAttributes Function that updates individual attributes.
  *
- * @return {Element} Element to render.
+ * @returns {Element} Element to render.
  */
-export default function Edit( { attributes, setAttributes } ) {
-	const { fallbackCurrentYear, showStartingYear, startingYear } = attributes;
+export default function Edit({ attributes, setAttributes }) {
+	const { beforeText, afterText, fallbackCurrentYear, showStartingYear, startingYear } =
+		attributes;
 
 	// Get the current year and make sure it's a string.
 	const currentYear = new Date().getFullYear().toString();
 
 	// When the block loads, set the fallbackCurrentYear attribute to the
 	// current year if it's not already set.
-	useEffect( () => {
-		if ( currentYear !== fallbackCurrentYear ) {
-			setAttributes( { fallbackCurrentYear: currentYear } );
+	useEffect(() => {
+		if (currentYear !== fallbackCurrentYear) {
+			setAttributes({ fallbackCurrentYear: currentYear });
 		}
-	}, [ currentYear, fallbackCurrentYear, setAttributes ] );
+	}, [currentYear, fallbackCurrentYear, setAttributes]);
+
+	let displayBeforeText;
+	if (beforeText) {
+		displayBeforeText = `${beforeText} `;
+	}
+
+	let displayAfterText;
+	if (afterText) {
+		displayAfterText = ` ${afterText}`;
+	}
 
 	let displayDate;
 
 	// Display the starting year as well if supplied by the user.
-	if ( showStartingYear && startingYear ) {
-		displayDate = startingYear + '–' + currentYear;
+	if (showStartingYear && startingYear) {
+		displayDate = `${startingYear}–${currentYear}`;
 	} else {
 		displayDate = currentYear;
 	}
@@ -74,34 +85,39 @@ export default function Edit( { attributes, setAttributes } ) {
 	return (
 		<>
 			<InspectorControls>
-				<PanelBody title={ __( 'Settings', 'copyright-date-block' ) }>
+				<PanelBody title={__('Settings', 'copyright-date-block')}>
+					<TextControl
+						label={__('Before Date Text', 'copyright-date-block')}
+						value={beforeText}
+						onChange={(value) => setAttributes({ beforeText: value })}
+					/>
+					<TextControl
+						label={__('After Date Text', 'copyright-date-block')}
+						value={afterText}
+						onChange={(value) => setAttributes({ afterText: value })}
+					/>
 					<ToggleControl
-						checked={ showStartingYear }
-						label={ __(
-							'Show starting year',
-							'copyright-date-block'
-						) }
-						onChange={ () =>
-							setAttributes( {
-								showStartingYear: ! showStartingYear,
-							} )
+						checked={showStartingYear}
+						label={__('Show starting year', 'copyright-date-block')}
+						onChange={() =>
+							setAttributes({
+								showStartingYear: !showStartingYear,
+							})
 						}
 					/>
-					{ showStartingYear && (
+					{showStartingYear && (
 						<TextControl
-							label={ __(
-								'Starting year',
-								'copyright-date-block'
-							) }
-							value={ startingYear }
-							onChange={ ( value ) =>
-								setAttributes( { startingYear: value } )
-							}
+							label={__('Starting year', 'copyright-date-block')}
+							value={startingYear}
+							onChange={(value) => setAttributes({ startingYear: value })}
 						/>
-					) }
+					)}
 				</PanelBody>
 			</InspectorControls>
-			<p { ...useBlockProps() }>© { displayDate }</p>
+			<p {...useBlockProps()}>
+				{displayBeforeText}© {displayDate}
+				{displayAfterText}
+			</p>
 		</>
 	);
 }

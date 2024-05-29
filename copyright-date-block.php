@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Registers the block using the metadata loaded from the `block.json` file.
  */
-function outermost_copyright_date_block_init() {
+function ftm_copyright_date_block_init() {
 	register_block_type( __DIR__ . '/build' );
 }
-add_action( 'init', 'outermost_copyright_date_block_init' );
+add_action( 'init', 'ftm_copyright_date_block_init' );
